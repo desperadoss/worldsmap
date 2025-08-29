@@ -28,7 +28,7 @@ const connectDB = async () => {
     }
 };
 
-// Schema and model for map points - UPDATED with resourceType
+// Schema and model for map points
 const pointSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -52,11 +52,6 @@ const pointSchema = new mongoose.Schema({
         type: String,
         enum: ['private', 'pending', 'public'],
         default: 'private'
-    },
-    resourceType: {
-        type: String,
-        default: 'custom',
-        trim: true
     }
 }, {
     timestamps: true
@@ -77,7 +72,7 @@ const adminSchema = new mongoose.Schema({
 
 const Admin = mongoose.model('Admin', adminSchema);
 
-// Schema for allowed session codes for admin login
+// NEW SCHEMA: Allowed session codes for admin login
 const allowedSessionSchema = new mongoose.Schema({
     sessionCode: {
         type: String,
@@ -169,10 +164,10 @@ app.get('/api/points/private', async (req, res) => {
     }
 });
 
-// POST - Add new point (default status: private) - UPDATED with resourceType
+// POST - Add new point (default status: private)
 app.post('/api/points', async (req, res) => {
     try {
-        const { name, x, z, resourceType } = req.body;
+        const { name, x, z } = req.body;
         const ownerSessionCode = req.header('X-Session-Code');
 
         if (!name || name.trim() === '') {
@@ -199,8 +194,7 @@ app.post('/api/points', async (req, res) => {
             x: numX, 
             z: numZ, 
             ownerSessionCode, 
-            status: 'private',
-            resourceType: resourceType || 'custom'
+            status: 'private' 
         });
         
         await newPoint.save();
@@ -211,11 +205,11 @@ app.post('/api/points', async (req, res) => {
     }
 });
 
-// PUT - Edit point (owner only) - UPDATED with resourceType
+// PUT - Edit point (owner only)
 app.put('/api/points/:id', async (req, res) => {
     try {
         const { id } = req.params;
-        const { name, x, z, resourceType } = req.body;
+        const { name, x, z } = req.body;
         const sessionCode = req.header('X-Session-Code');
 
         if (!name || name.trim() === '') {
@@ -245,7 +239,6 @@ app.put('/api/points/:id', async (req, res) => {
         point.name = name.trim();
         point.x = numX;
         point.z = numZ;
-        point.resourceType = resourceType || 'custom';
         await point.save();
         res.json(point);
     } catch (err) {
@@ -311,7 +304,7 @@ app.delete('/api/points/:id', async (req, res) => {
 
 // === ADMIN ENDPOINTS ===
 
-// POST - Admin login - with allowed sessions check
+// POST - Admin login - UPDATED with allowed sessions check
 app.post('/api/admin/login', async (req, res) => {
     try {
         const { adminCode } = req.body;
@@ -421,11 +414,11 @@ app.put('/api/admin/reject/:id', checkAdmin, async (req, res) => {
     }
 });
 
-// PUT - Edit public point (admin) - UPDATED with resourceType
+// PUT - Edit public point (admin)
 app.put('/api/admin/edit/:id', checkAdmin, async (req, res) => {
     try {
         const { id } = req.params;
-        const { name, x, z, resourceType } = req.body;
+        const { name, x, z } = req.body;
 
         if (!name || name.trim() === '') {
             return res.status(400).json({ message: 'Point name is required.' });
@@ -449,7 +442,6 @@ app.put('/api/admin/edit/:id', checkAdmin, async (req, res) => {
         point.name = name.trim();
         point.x = numX;
         point.z = numZ;
-        point.resourceType = resourceType || 'custom';
         await point.save();
         res.json(point);
     } catch (err) {
@@ -555,7 +547,7 @@ app.delete('/api/owner/remove-session', checkOwner, async (req, res) => {
     }
 });
 
-// PUT - Promote user to admin (owner)
+// PUT - Promote user to admin (owner) - UPDATED
 app.put('/api/owner/promote', checkOwner, async (req, res) => {
     try {
         const { sessionCode: codeToPromote } = req.body;
