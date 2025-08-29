@@ -38,48 +38,6 @@
                 <h2 class="section-title">Your Points</h2>
                 <div class="add-point-form-inline">
                     <div class="form-group">
-                        <label for="resource-select">Resource Type</label>
-                        <select id="resource-select">
-                            <option value="custom">Custom Name</option>
-                            <optgroup label="Ores">
-                                <option value="diamond_ore">Diamond Ore</option>
-                                <option value="iron_ore">Iron Ore</option>
-                                <option value="gold_ore">Gold Ore</option>
-                                <option value="coal_ore">Coal Ore</option>
-                                <option value="copper_ore">Copper Ore</option>
-                                <option value="redstone_ore">Redstone Ore</option>
-                                <option value="lapis_ore">Lapis Lazuli Ore</option>
-                                <option value="emerald_ore">Emerald Ore</option>
-                                <option value="netherite">Ancient Debris</option>
-                            </optgroup>
-                            <optgroup label="Structures">
-                                <option value="village">Village</option>
-                                <option value="stronghold">Stronghold</option>
-                                <option value="nether_fortress">Nether Fortress</option>
-                                <option value="end_city">End City</option>
-                                <option value="ocean_monument">Ocean Monument</option>
-                                <option value="woodland_mansion">Woodland Mansion</option>
-                                <option value="desert_temple">Desert Temple</option>
-                                <option value="jungle_temple">Jungle Temple</option>
-                                <option value="igloo">Igloo</option>
-                                <option value="shipwreck">Shipwreck</option>
-                            </optgroup>
-                            <optgroup label="Biomes">
-                                <option value="mushroom_biome">Mushroom Island</option>
-                                <option value="mesa">Badlands</option>
-                                <option value="ice_spikes">Ice Spikes</option>
-                                <option value="flower_forest">Flower Forest</option>
-                            </optgroup>
-                            <optgroup label="Other">
-                                <option value="spawn">Spawn Point</option>
-                                <option value="base">Base</option>
-                                <option value="farm">Farm</option>
-                                <option value="portal">Nether Portal</option>
-                                <option value="treasure">Treasure</option>
-                            </optgroup>
-                        </select>
-                    </div>
-                    <div class="form-group" id="custom-name-group">
                         <label for="name-input">Point Name</label>
                         <input type="text" id="name-input" placeholder="e.g. Home">
                     </div>
@@ -105,8 +63,6 @@
             <h2 class="modal-title" id="point-name">Point Name</h2>
             <p>X Coordinate: <span id="point-x"></span></p>
             <p>Z Coordinate: <span id="point-z"></span></p>
-            <p class="point-type-info">Type: <span id="point-type"></span></p>
-            <div class="point-status-info" id="point-status-info"></div>
             <div class="modal-buttons">
                 <button class="button" id="share-point">Share</button>
                 <button class="button" id="edit-point">Edit</button>

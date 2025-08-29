@@ -11,9 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const showSharedPointsBtn = document.getElementById('show-shared-points');
     const sessionCodeDisplay = document.getElementById('session-code-text');
     
-    // Add point form - NEW ELEMENTS
-    const resourceSelect = document.getElementById('resource-select');
-    const customNameGroup = document.getElementById('custom-name-group');
+    // Add point form
     const nameInput = document.getElementById('name-input');
     const xInput = document.getElementById('x-input');
     const zInput = document.getElementById('z-input');
@@ -37,58 +35,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const promoteSessionCodeInput = document.getElementById('promote-session-code');
     const pendingPointsList = document.getElementById('pending-points-list');
     
-    // Owner panel elements
+    // NEW ELEMENTS - owner panel
     const newSessionCodeInput = document.getElementById('new-session-code');
     const addSessionBtn = document.getElementById('add-session-btn');
     const allowedSessionsList = document.getElementById('allowed-sessions-list');
     const refreshSessionsBtn = document.getElementById('refresh-sessions');
-    
-    // === MINECRAFT RESOURCE DEFINITIONS ===
-    const MINECRAFT_RESOURCES = {
-    // Ores
-    'diamond_ore': { name: 'Diamond Ore', color: '#5DADE2', category: 'ore' },
-    'iron_ore':    { name: 'Iron Ore',    color: '#B7950B', category: 'ore' },
-    'gold_ore':    { name: 'Gold Ore',    color: '#F1C40F', category: 'ore' },
-    'coal_ore':    { name: 'Coal Ore',    color: '#2C3E50', category: 'ore' },
-    'copper_ore':  { name: 'Copper Ore',  color: '#E67E22', category: 'ore' },
-    'redstone_ore':{ name: 'Redstone Ore',color: '#E74C3C', category: 'ore' },
-    'lapis_ore':   { name: 'Lapis Lazuli Ore', color: '#3498DB', category: 'ore' },
-    'emerald_ore': { name: 'Emerald Ore', color: '#2ECC71', category: 'ore' },
-    'netherite':   { name: 'Ancient Debris',  color: '#8B4513', category: 'ore' },
-    
-    // Structures → podmienione na "civilization style"
-    'village':     { name: 'Village',      color: '#D2691E', category: 'structure' },
-    'city':        { name: 'City',         color: '#2E86C1', category: 'structure' },
-    'town':        { name: 'Town',         color: '#5DADE2', category: 'structure' },
-    'capital_city':{ name: 'Capital City', color: '#1F618D', category: 'structure' },
-    'fortress':    { name: 'Fortress',     color: '#7B241C', category: 'structure' },
-    'castle':      { name: 'Castle',       color: '#884EA0', category: 'structure' },
-    'harbor':      { name: 'Harbor',       color: '#1ABC9C', category: 'structure' },
-    'market':      { name: 'Marketplace',  color: '#F39C12', category: 'structure' },
-    'academy':     { name: 'Academy',      color: '#117A65', category: 'structure' },
-    'monument':    { name: 'Monument',     color: '#E67E22', category: 'structure' },
-
-    // Biomes (zostawione)
-'wastelands':         { name: 'Wastelands',          color: '#A67C52', category: 'biome' },
-'sandlands':          { name: 'Sandlands',           color: '#E0B95C', category: 'biome' },
-'savannah_plateau':   { name: 'Savannah Plateau',    color: '#D4C45C', category: 'biome' },
-'alpine':             { name: 'Alpine',              color: '#A9A9A9', category: 'biome' },
-'snowy_forest_tundra':{ name: 'Snowy Forest/Tundra', color: '#DCDCDC', category: 'biome' },
-'sea_ice':            { name: 'Sea Ice',             color: '#B0E0E6', category: 'biome' },
-'water':              { name: 'Water',               color: '#1F618D', category: 'biome' },
-'woodlands_plains':   { name: 'Woodlands/Plains',    color: '#58D68D', category: 'biome' },
-'jungle_tropical':    { name: 'Jungle/Tropical',     color: '#229954', category: 'biome' },
-'giant_forest':       { name: 'Giant Forest',        color: '#145A32', category: 'biome' },
-'taiga_highlands':    { name: 'Taiga Highlands',     color: '#1E8449', category: 'biome' },
-'cherry_forest_mtn':  { name: 'Cherry Forest Mountain', color: '#E6B0AA', category: 'biome' },
-    
-    // Other (zostawione)
-    'spawn':   { name: 'Spawn Point', color: '#32CD32', category: 'other' },
-    'base':    { name: 'Base',        color: '#4169E1', category: 'other' },
-    'farm':    { name: 'Farm',        color: '#9ACD32', category: 'other' },
-    'portal':  { name: 'Nether Portal', color: '#8A2BE2', category: 'other' },
-    'treasure':{ name: 'Treasure',    color: '#FFD700', category: 'other' }
-    };
     
     // === Configuration and global variables ===
     const MAP_WIDTH_PX = 10000;
@@ -118,21 +69,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let isUserAdmin = false;
     let isUserOwner = false;
-
-    // === NEW: Resource Select Handler ===
-    resourceSelect.addEventListener('change', () => {
-        if (resourceSelect.value === 'custom') {
-            customNameGroup.style.display = 'flex';
-            nameInput.required = true;
-        } else {
-            customNameGroup.style.display = 'none';
-            nameInput.required = false;
-            nameInput.value = MINECRAFT_RESOURCES[resourceSelect.value].name;
-        }
-    });
-
-    // Initialize the form
-    resourceSelect.dispatchEvent(new Event('change'));
 
     // === Check if user is owner and admin ===
     async function checkUserPermissions() {
@@ -335,8 +271,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function clearInputs() {
         try {
-            resourceSelect.value = 'custom';
-            resourceSelect.dispatchEvent(new Event('change'));
             nameInput.value = '';
             xInput.value = '';
             zInput.value = '';
@@ -386,25 +320,12 @@ document.addEventListener('DOMContentLoaded', () => {
             pointWrapper.dataset.pointZ = point.z;
             pointWrapper.dataset.ownerSessionCode = point.ownerSessionCode;
             pointWrapper.dataset.status = point.status;
-            pointWrapper.dataset.resourceType = point.resourceType || 'custom';
             pointWrapper.style.left = `${x}px`;
             pointWrapper.style.top = `${z}px`;
 
             const pointElement = document.createElement('div');
             pointElement.classList.add('point');
-            
-            // NEW: Apply resource-specific styling
-            if (point.resourceType && point.resourceType !== 'custom') {
-                const resource = MINECRAFT_RESOURCES[point.resourceType];
-                if (resource) {
-                    pointElement.style.setProperty('--resource-color', resource.color);
-                    pointElement.classList.add('resource-point');
-                    pointElement.classList.add(`resource-${point.resourceType}`);
-                }
-            } else {
-                // Keep original status-based coloring for custom points
-                pointElement.classList.add(point.status);
-            }
+            pointElement.classList.add(point.status);
             
             const pointNameElement = document.createElement('div');
             pointNameElement.classList.add('point-name');
@@ -516,15 +437,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // === Form and modal logic ===
     addPointBtn.addEventListener('click', async () => {
-        const resourceType = resourceSelect.value;
-        let name;
-        
-        if (resourceType === 'custom') {
-            name = nameInput.value.trim();
-        } else {
-            name = MINECRAFT_RESOURCES[resourceType].name;
-        }
-        
+        const name = nameInput.value.trim();
         const x = parseInt(xInput.value);
         const z = parseInt(zInput.value);
         const mode = addPointBtn.dataset.mode;
@@ -540,13 +453,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             let response;
-            const pointData = { 
-                name, 
-                x, 
-                z,
-                resourceType: resourceType === 'custom' ? 'custom' : resourceType
-            };
-            
             if (mode === 'edit') {
                 const point = document.querySelector('.point-wrapper[data-point-id="' + pointId + '"]');
                 const isPublic = point.dataset.status === 'public';
@@ -558,7 +464,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         'Content-Type': 'application/json',
                         'X-Session-Code': sessionCode
                     },
-                    body: JSON.stringify(pointData)
+                    body: JSON.stringify({ name, x, z })
                 });
 
                 addPointBtn.textContent = 'Add Point';
@@ -572,7 +478,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         'Content-Type': 'application/json',
                         'X-Session-Code': sessionCode
                     },
-                    body: JSON.stringify(pointData)
+                    body: JSON.stringify({ name, x, z })
                 });
             }
 
@@ -597,3 +503,486 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    closeButtons.forEach(btn => {
+        btn.addEventListener('click', hideModals);
+    });
+
+    window.addEventListener('click', (e) => {
+        if (e.target.classList.contains('modal')) {
+            hideModals();
+        }
+    });
+
+    function displayPointDetails(point) {
+        document.getElementById('point-name').textContent = point.name;
+        document.getElementById('point-x').textContent = point.x;
+        document.getElementById('point-z').textContent = point.z;
+
+        sharePointBtn.style.display = 'none';
+        editPointBtn.style.display = 'none';
+        deletePointBtn.style.display = 'none';
+
+        if (point.status === 'private') {
+            if (point.ownerSessionCode === sessionCode) {
+                sharePointBtn.style.display = 'inline-block';
+                editPointBtn.style.display = 'inline-block';
+                deletePointBtn.style.display = 'inline-block';
+            }
+        } else if (point.status === 'pending') {
+            if (point.ownerSessionCode === sessionCode || isUserAdmin) {
+                editPointBtn.style.display = 'inline-block';
+                deletePointBtn.style.display = 'inline-block';
+            }
+        } else if (point.status === 'public') {
+            if (isUserAdmin) {
+                editPointBtn.style.display = 'inline-block';
+                deletePointBtn.style.display = 'inline-block';
+            }
+        }
+        
+        pointDetailsModal.dataset.pointId = point._id;
+        pointDetailsModal.style.display = 'block';
+    }
+
+    sharePointBtn.addEventListener('click', async () => {
+        const pointId = pointDetailsModal.dataset.pointId;
+        try {
+            const res = await fetch(`/api/points/share/${pointId}`, {
+                method: 'PUT',
+                headers: { 'X-Session-Code': sessionCode }
+            });
+            if (res.ok) {
+                showSuccess('Point sent for admin approval.');
+                fetchPoints();
+                hideModals();
+            } else {
+                const errorData = await res.json();
+                showError(errorData.message || 'Error sharing point.');
+            }
+        } catch (err) {
+            console.error('Error sharing:', err);
+            showError('Server connection error.');
+        }
+    });
+
+    editPointBtn.addEventListener('click', () => {
+        const pointId = pointDetailsModal.dataset.pointId;
+        const pointName = document.getElementById('point-name').textContent;
+        const pointX = document.getElementById('point-x').textContent;
+        const pointZ = document.getElementById('point-z').textContent;
+
+        nameInput.value = pointName;
+        xInput.value = pointX;
+        zInput.value = pointZ;
+        
+        addPointBtn.textContent = 'Save Changes';
+        addPointBtn.dataset.mode = 'edit';
+        addPointBtn.dataset.pointId = pointId;
+        hideModals();
+    });
+    
+    deletePointBtn.addEventListener('click', async () => {
+        if (!confirm('Are you sure you want to delete this point?')) {
+            return;
+        }
+
+        const pointId = pointDetailsModal.dataset.pointId;
+        const point = document.querySelector('.point-wrapper[data-point-id="' + pointId + '"]');
+        const isPublic = point.dataset.status === 'public';
+        const url = isPublic ? `/api/admin/delete/${pointId}` : `/api/points/${pointId}`;
+
+        try {
+            const res = await fetch(url, {
+                method: 'DELETE',
+                headers: { 'X-Session-Code': sessionCode }
+            });
+            if (res.ok) {
+                showSuccess('Point deleted.');
+                fetchPoints();
+                hideModals();
+            } else {
+                const errorData = await res.json();
+                showError(errorData.message || 'Error deleting point.');
+            }
+        } catch (err) {
+            console.error('Error deleting:', err);
+            showError('Server connection error.');
+        }
+    });
+
+    // === NEW OWNER MENU ===
+    function showOwnerMenu() {
+        hideModals();
+        
+        // Create modal with choices
+        const menuModal = document.createElement('div');
+        menuModal.className = 'modal';
+        menuModal.style.display = 'block';
+        menuModal.innerHTML = `
+            <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <h2 class="modal-title">Management Panel</h2>
+                <p>Choose what you want to do:</p>
+                <div class="modal-buttons">
+                    <button class="button" id="open-admin-panel">Admin Panel</button>
+                    <button class="button" id="open-owner-panel">Owner Panel</button>
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(menuModal);
+        
+        // Button handlers
+        menuModal.querySelector('.close-button').addEventListener('click', () => {
+            document.body.removeChild(menuModal);
+        });
+        
+        menuModal.querySelector('#open-admin-panel').addEventListener('click', () => {
+            document.body.removeChild(menuModal);
+            adminPanelModal.style.display = 'block';
+            fetchPendingPoints();
+        });
+        
+        menuModal.querySelector('#open-owner-panel').addEventListener('click', () => {
+            document.body.removeChild(menuModal);
+            ownerPanelModal.style.display = 'block';
+            fetchAllowedSessions();
+        });
+        
+        // Close on background click
+        menuModal.addEventListener('click', (e) => {
+            if (e.target === menuModal) {
+                document.body.removeChild(menuModal);
+            }
+        });
+    }
+
+    // === Admin and owner panels ===
+    sessionCodeDisplay.addEventListener('click', () => {
+        if (isUserOwner) {
+            showOwnerMenu(); // Show choice menu for owner
+        } else if (isUserAdmin) {
+            hideModals();
+            adminPanelModal.style.display = 'block';
+            fetchPendingPoints();
+        } else {
+            hideModals();
+            adminLoginModal.style.display = 'block';
+        }
+    });
+
+    adminLoginBtn.addEventListener('click', async () => {
+        const code = adminLoginInput.value.trim();
+        if (!code) {
+            showError('Enter admin code.');
+            return;
+        }
+
+        try {
+            const res = await fetch('/api/admin/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Session-Code': sessionCode
+                },
+                body: JSON.stringify({ adminCode: code })
+            });
+            
+            const data = await res.json();
+            
+            if (data.success) {
+                isUserAdmin = true;
+                adminLoginInput.value = '';
+                hideModals();
+                adminPanelModal.style.display = 'block';
+                fetchPendingPoints();
+                showSuccess('Successfully logged in as admin.');
+            } else {
+                showError(data.message || 'Invalid admin code.');
+            }
+        } catch (err) {
+            console.error('Admin login error:', err);
+            showError('Server connection error.');
+        }
+    });
+
+    refreshPendingBtn.addEventListener('click', fetchPendingPoints);
+
+    async function fetchPendingPoints() {
+        try {
+            const res = await fetch('/api/admin/pending', {
+                headers: { 'X-Session-Code': sessionCode }
+            });
+            
+            if (res.status === 403) {
+                showError('Admin permissions required.');
+                return;
+            }
+            
+            if (!res.ok) {
+                throw new Error(`HTTP Error: ${res.status}`);
+            }
+            
+            const pendingPoints = await res.json();
+            renderPendingPoints(pendingPoints);
+        } catch (err) {
+            console.error('Error fetching pending points:', err);
+            pendingPointsList.innerHTML = '<li>Server connection error</li>';
+        }
+    }
+
+    function renderPendingPoints(points) {
+        pendingPointsList.innerHTML = '';
+        if (points.length === 0) {
+            pendingPointsList.innerHTML = '<li>No pending points.</li>';
+            return;
+        }
+
+        points.forEach(point => {
+            const li = document.createElement('li');
+            li.innerHTML = `
+                <span>${point.name} (X: ${point.x}, Z: ${point.z})</span>
+                <div>
+                    <button class="button accept-btn" data-id="${point._id}">Accept</button>
+                    <button class="button reject-btn" data-id="${point._id}">Reject</button>
+                </div>
+            `;
+            pendingPointsList.appendChild(li);
+        });
+
+        document.querySelectorAll('.accept-btn').forEach(btn => {
+            btn.addEventListener('click', async (e) => {
+                const id = e.target.dataset.id;
+                try {
+                    const res = await fetch(`/api/admin/accept/${id}`, { 
+                        method: 'PUT', 
+                        headers: { 'X-Session-Code': sessionCode } 
+                    });
+                    if (res.ok) {
+                        fetchPendingPoints();
+                        fetchPoints();
+                        showSuccess('Point accepted.');
+                    } else {
+                        const errorData = await res.json();
+                        showError(errorData.message || 'Error accepting point.');
+                    }
+                } catch (err) {
+                    console.error('Error accepting:', err);
+                    showError('Server connection error.');
+                }
+            });
+        });
+
+        document.querySelectorAll('.reject-btn').forEach(btn => {
+            btn.addEventListener('click', async (e) => {
+                if (!confirm('Are you sure you want to reject this point? It will be returned as private.')) {
+                    return;
+                }
+                
+                const id = e.target.dataset.id;
+                try {
+                    const res = await fetch(`/api/admin/reject/${id}`, { 
+                        method: 'PUT', 
+                        headers: { 'X-Session-Code': sessionCode } 
+                    });
+                    if (res.ok) {
+                        fetchPendingPoints();
+                        fetchPoints();
+                        showSuccess('Point rejected - returned as private.');
+                    } else {
+                        const errorData = await res.json();
+                        showError(errorData.message || 'Error rejecting point.');
+                    }
+                } catch (err) {
+                    console.error('Error rejecting:', err);
+                    showError('Server connection error.');
+                }
+            });
+        });
+    }
+
+    // === NEW OWNER PANEL FUNCTIONS ===
+
+    // Fetch allowed sessions list
+    async function fetchAllowedSessions() {
+        try {
+            const res = await fetch('/api/owner/allowed-sessions', {
+                headers: { 'X-Session-Code': sessionCode }
+            });
+            
+            if (!res.ok) {
+                throw new Error(`HTTP Error: ${res.status}`);
+            }
+            
+            const allowedSessions = await res.json();
+            renderAllowedSessions(allowedSessions);
+        } catch (err) {
+            console.error('Error fetching allowed sessions:', err);
+            allowedSessionsList.innerHTML = '<li>Server connection error</li>';
+        }
+    }
+
+    // Render allowed sessions list
+    function renderAllowedSessions(sessions) {
+        allowedSessionsList.innerHTML = '';
+        if (sessions.length === 0) {
+            allowedSessionsList.innerHTML = '<li>No allowed sessions.</li>';
+            return;
+        }
+
+        sessions.forEach(session => {
+            const li = document.createElement('li');
+            li.innerHTML = `
+                <div class="session-item">
+                    <span class="session-code">${session.sessionCode}</span>
+                    <small class="session-date">Added: ${new Date(session.createdAt).toLocaleString()}</small>
+                    <button class="button remove-session-btn" data-session="${session.sessionCode}">Remove</button>
+                </div>
+            `;
+            allowedSessionsList.appendChild(li);
+        });
+
+        // Add event listeners to remove buttons
+        document.querySelectorAll('.remove-session-btn').forEach(btn => {
+            btn.addEventListener('click', async (e) => {
+                const sessionToRemove = e.target.dataset.session;
+                
+                if (!confirm(`Are you sure you want to remove session ${sessionToRemove} from the allowed list?`)) {
+                    return;
+                }
+                
+                try {
+                    const res = await fetch('/api/owner/remove-session', {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-Session-Code': sessionCode
+                        },
+                        body: JSON.stringify({ sessionCode: sessionToRemove })
+                    });
+                    
+                    if (res.ok) {
+                        fetchAllowedSessions(); // Refresh list
+                        showSuccess('Session code removed from allowed list.');
+                    } else {
+                        const errorData = await res.json();
+                        showError(errorData.message || 'Error removing session code.');
+                    }
+                } catch (err) {
+                    console.error('Error removing session:', err);
+                    showError('Server connection error.');
+                }
+            });
+        });
+    }
+
+    // Add new allowed session
+    addSessionBtn.addEventListener('click', async () => {
+        const newSession = newSessionCodeInput.value.trim();
+        if (!newSession) {
+            showError('Enter session code.');
+            return;
+        }
+
+        try {
+            const res = await fetch('/api/owner/allow-session', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Session-Code': sessionCode
+                },
+                body: JSON.stringify({ sessionCode: newSession })
+            });
+            
+            const data = await res.json();
+            
+            if (res.ok) {
+                newSessionCodeInput.value = '';
+                fetchAllowedSessions(); // Refresh list
+                showSuccess(data.message);
+            } else {
+                showError(data.message || 'Error adding session code.');
+            }
+        } catch (err) {
+            console.error('Error adding session:', err);
+            showError('Server connection error.');
+        }
+    });
+
+    // Refresh sessions list
+    refreshSessionsBtn.addEventListener('click', fetchAllowedSessions);
+
+    // Promote user to admin
+    promoteUserBtn.addEventListener('click', async () => {
+        const code = promoteSessionCodeInput.value.trim();
+        if (!code) {
+            showError('Enter session code of user to promote.');
+            return;
+        }
+
+        try {
+            const res = await fetch('/api/owner/promote', {
+                method: 'PUT',
+                headers: { 
+                    'Content-Type': 'application/json', 
+                    'X-Session-Code': sessionCode 
+                },
+                body: JSON.stringify({ sessionCode: code })
+            });
+            const result = await res.json();
+            if (res.ok) {
+                promoteSessionCodeInput.value = '';
+                showSuccess(result.message);
+            } else {
+                showError(result.message || 'Error promoting user.');
+            }
+        } catch (err) {
+            console.error('Error promoting user:', err);
+            showError('Server connection error.');
+        }
+    });
+
+    // Handle Enter key in input fields
+    adminLoginInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            adminLoginBtn.click();
+        }
+    });
+
+    newSessionCodeInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            addSessionBtn.click();
+        }
+    });
+
+    promoteSessionCodeInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            promoteUserBtn.click();
+        }
+    });
+
+    [nameInput, xInput, zInput].forEach(input => {
+        input.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                addPointBtn.click();
+            }
+        });
+    });
+
+    // Add Escape key handling for closing modals
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            hideModals();
+        }
+    });
+
+    // === INITIALIZATION ===
+    async function init() {
+        await checkUserPermissions(); // Check user permissions
+        updateMapPosition();
+        fetchPoints();
+    }
+
+    // Run initialization
+    init();
+});

@@ -146,7 +146,7 @@ body, html {
     image-rendering: crisp-edges;
 }
 
-/* === MODERN MARKERS === */
+/* POINTS - REDUCED BY HALF AND RESPONSIVE */
 .point-wrapper {
     position: absolute;
     cursor: pointer;
@@ -163,118 +163,86 @@ body, html {
 }
 
 .point {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    border-radius: 50% 50% 50% 0;
+    transform: rotate(-45deg);
     cursor: pointer;
-    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3);
-    border: 2px solid rgba(255, 255, 255, 0.4);
-    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), 
-                box-shadow 0.25s ease, 
-                filter 0.25s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    border: 2.5px solid rgba(255, 255, 255, 0.3);
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
     position: relative;
-    margin: 0 auto 8px auto;
-    background: linear-gradient(135deg, #666 0%, #333 50%, #222 100%);
+    margin: 0 auto 10px auto;
     image-rendering: pixelated;
     image-rendering: -moz-crisp-edges;
     image-rendering: crisp-edges;
     transform-style: preserve-3d;
     backface-visibility: hidden;
-    -webkit-transform: translate3d(0, 0, 0);
-    transform: translate3d(0, 0, 0);
+    -webkit-transform: translate3d(0, 0, 0) rotate(-45deg);
+    transform: translate3d(0, 0, 0) rotate(-45deg);
 }
 
-/* Modern glow effect on hover */
-.point:hover {
-    transform: translate3d(0, 0, 0) scale(1.3);
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.7), 
-                0 0 25px var(--resource-color, #90ee90),
-                inset 0 1px 0 rgba(255, 255, 255, 0.4);
-    filter: brightness(1.2) saturate(1.1);
-}
-
-/* Inner dot for better visibility */
 .point::before {
     content: '';
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 8px;
-    height: 8px;
-    background-color: rgba(255, 255, 255, 0.95);
+    width: 10px;
+    height: 10px;
+    background-color: rgba(255, 255, 255, 0.9);
     border-radius: 50%;
-    transform: translate(-50%, -50%);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    transform: translate3d(-50%, -50%, 0) rotate(45deg);
     image-rendering: pixelated;
     image-rendering: -moz-crisp-edges;
     image-rendering: crisp-edges;
 }
 
-/* === RESOURCE-BASED COLORS === */
-.point.resource-point {
-    background: linear-gradient(135deg, var(--resource-color), 
-                color-mix(in srgb, var(--resource-color) 70%, black));
-    border-color: color-mix(in srgb, var(--resource-color) 80%, white);
+.point:hover {
+    transform: translate3d(0, 0, 0) rotate(-45deg) scale(1.2);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
 }
 
-.point.resource-point:hover {
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.7), 
-                0 0 25px var(--resource-color),
-                inset 0 1px 0 rgba(255, 255, 255, 0.4);
-}
-
-/* === FALLBACK STATUS COLORS FOR CUSTOM POINTS === */
 .point.private {
     background: linear-gradient(135deg, #f1c40f 0%, #f39c12 100%);
     border-color: rgba(241, 196, 15, 0.5);
-    --resource-color: #f1c40f;
 }
 
 .point.public {
     background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
     border-color: rgba(46, 204, 113, 0.5);
-    --resource-color: #2ecc71;
 }
 
 .point.pending {
     background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
     border-color: rgba(231, 76, 60, 0.5);
-    --resource-color: #e74c3c;
     animation: pulse 2s infinite;
 }
 
 @keyframes pulse {
-    0% { box-shadow: 0 3px 12px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3); }
-    50% { 
-        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.5), 
-                    0 0 20px rgba(231, 76, 60, 0.6),
-                    inset 0 1px 0 rgba(255, 255, 255, 0.3); 
-    }
-    100% { box-shadow: 0 3px 12px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3); }
+    0% { box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4); }
+    50% { box-shadow: 0 2px 8px rgba(231, 76, 60, 0.6), 0 0 20px rgba(231, 76, 60, 0.3); }
+    100% { box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4); }
 }
 
 .point-wrapper.hidden {
     display: none;
 }
 
-/* Modern point name styling */
 .point-name {
     position: absolute;
-    top: 32px;
+    top: 37.5px;
     left: 50%;
     transform: translateX(-50%);
     white-space: nowrap;
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.85) 100%);
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.7) 100%);
     color: #fff;
-    padding: 4px 8px;
-    border-radius: 12px;
-    font-size: 11px;
-    font-weight: 600;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 13.75px;
+    font-weight: 500;
+    border: 1.25px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 2.5px 7.5px rgba(0, 0, 0, 0.3);
     pointer-events: none;
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
 }
 
 .your-points-section {
@@ -305,11 +273,6 @@ body, html {
     flex-grow: 1;
 }
 
-/* NEW: Hide custom name group by default */
-#custom-name-group {
-    display: none;
-}
-
 .add-button {
     background-color: #90ee90;
     color: #212224;
@@ -325,8 +288,8 @@ body, html {
     background-color: #83d47d;
 }
 
-/* Form inputs and select styling */
-input[type="text"], input[type="number"], select {
+/* FIXED INPUTS - prevent blocking */
+input[type="text"], input[type="number"] {
     background-color: #3b3d40;
     border: 1px solid #5a5c60;
     color: #c9c9c9;
@@ -336,38 +299,14 @@ input[type="text"], input[type="number"], select {
     transition: border-color 0.2s;
 }
 
-input[type="text"]:focus, input[type="number"]:focus, select:focus {
+input[type="text"]:focus, input[type="number"]:focus {
     border-color: #90ee90;
     background-color: #444548;
 }
 
-input[type="text"]:disabled, input[type="number"]:disabled, select:disabled {
+input[type="text"]:disabled, input[type="number"]:disabled {
     opacity: 0.6;
     cursor: not-allowed;
-}
-
-/* Select styling */
-select {
-    cursor: pointer;
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
-    background-repeat: no-repeat;
-    background-position: right 8px center;
-    background-size: 16px;
-    padding-right: 32px;
-}
-
-select option {
-    background-color: #3b3d40;
-    color: #c9c9c9;
-}
-
-select optgroup {
-    background-color: #2e3034;
-    color: #90ee90;
-    font-weight: bold;
 }
 
 .session-code-display {
@@ -409,7 +348,7 @@ select optgroup {
     color: #c9c9c9;
 }
 
-/* Owner panel styling */
+/* NEW STYLES FOR OWNER PANEL */
 .modal-content.owner-panel {
     width: 500px;
     max-width: 95%;
@@ -434,37 +373,6 @@ select optgroup {
 .modal-title {
     color: #90ee90;
     margin-top: 0;
-}
-
-/* NEW: Point type and status info styling */
-.point-type-info, .point-status-info {
-    margin: 10px 0;
-    font-size: 0.9em;
-}
-
-.point-status-info {
-    padding: 5px 8px;
-    border-radius: 4px;
-    font-weight: 500;
-    text-align: center;
-}
-
-.point-status-info.status-private {
-    background-color: rgba(241, 196, 15, 0.2);
-    border: 1px solid rgba(241, 196, 15, 0.5);
-    color: #f1c40f;
-}
-
-.point-status-info.status-pending {
-    background-color: rgba(231, 76, 60, 0.2);
-    border: 1px solid rgba(231, 76, 60, 0.5);
-    color: #e74c3c;
-}
-
-.point-status-info.status-public {
-    background-color: rgba(46, 204, 113, 0.2);
-    border: 1px solid rgba(46, 204, 113, 0.5);
-    color: #2ecc71;
 }
 
 .modal-section {
@@ -603,97 +511,6 @@ ul#pending-points-list {
     box-sizing: border-box;
 }
 
-/* === MODERN ENHANCEMENTS === */
-
-/* Improved scrollbars for webkit browsers */
-.allowed-sessions-list::-webkit-scrollbar,
-#pending-points-list::-webkit-scrollbar {
-    width: 8px;
-}
-
-.allowed-sessions-list::-webkit-scrollbar-track,
-#pending-points-list::-webkit-scrollbar-track {
-    background: #212224;
-    border-radius: 4px;
-}
-
-.allowed-sessions-list::-webkit-scrollbar-thumb,
-#pending-points-list::-webkit-scrollbar-thumb {
-    background: #5a5c60;
-    border-radius: 4px;
-}
-
-.allowed-sessions-list::-webkit-scrollbar-thumb:hover,
-#pending-points-list::-webkit-scrollbar-thumb:hover {
-    background: #7a7d81;
-}
-
-/* Enhanced form focus states */
-input[type="text"]:focus, input[type="number"]:focus, select:focus {
-    border-color: #90ee90;
-    background-color: #444548;
-    box-shadow: 0 0 0 2px rgba(144, 238, 144, 0.2);
-}
-
-/* Button hover enhancements */
-.button:hover:not(.active) {
-    background-color: #55575a;
-    border-color: #7a7d81;
-    transform: translateY(-1px);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.add-button:hover {
-    background-color: #83d47d;
-    transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(144, 238, 144, 0.3);
-}
-
-/* Improved modal animations */
-@keyframes modalSlideIn {
-    from {
-        opacity: 0;
-        transform: translate(-50%, -60%);
-    }
-    to {
-        opacity: 1;
-        transform: translate(-50%, -50%);
-    }
-}
-
-.modal.show .modal-content {
-    animation: modalSlideIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-/* Enhanced point wrapper animations */
-.point-wrapper {
-    animation: pointFadeIn 0.5s ease-out;
-}
-
-@keyframes pointFadeIn {
-    from {
-        opacity: 0;
-        transform: translate(-50%, -50%) scale(0.5);
-    }
-    to {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(1);
-    }
-}
-
-/* Loading states */
-.button:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    transform: none !important;
-}
-
-.button:disabled:hover {
-    background-color: #444548 !important;
-    border-color: #5a5c60 !important;
-    box-shadow: none !important;
-}
-
 /* RESPONSIVENESS */
 @media (max-width: 768px) {
     .modal-content.owner-panel {
@@ -723,48 +540,5 @@ input[type="text"]:focus, input[type="number"]:focus, select:focus {
     
     .main-content {
         padding: 10px;
-    }
-    
-    /* Responsive point scaling */
-    .point {
-        width: 20px;
-        height: 20px;
-    }
-    
-    .point::before {
-        width: 6px;
-        height: 6px;
-    }
-    
-    .point-name {
-        font-size: 10px;
-        padding: 3px 6px;
-        top: 28px;
-    }
-}
-
-/* Dark mode compatibility */
-@media (prefers-color-scheme: dark) {
-    body, html {
-        background-color: #1a1a1a;
-    }
-    
-    .main-content {
-        background-color: #1a1a1a;
-    }
-}
-
-/* Reduced motion for accessibility */
-@media (prefers-reduced-motion: reduce) {
-    .point,
-    .button,
-    .add-button,
-    .point-wrapper {
-        transition: none;
-        animation: none;
-    }
-    
-    .point:hover {
-        transform: translate3d(0, 0, 0) scale(1.1);
     }
 }
